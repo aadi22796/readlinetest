@@ -4,9 +4,11 @@ import (
     "fmt"
     "os"
     	"bufio"
+
 	"sync"
-	"syscall"
+	"debug/elf"
 )
+var mutex sync.Mutex{}
 
 func write(fil *os.File){
 	fmt.Println("Enter your string")
@@ -24,32 +26,37 @@ func write(fil *os.File){
 	return
 	}
 
-func fopen(filename string, mode int, perm os.FileMode, wg sync.WaitGroup, m sync.Mutex){
-	m.Lock()
+func fopen(filename string, mode int, perm os.FileMode){
+//	if (read mode)
+//{
+// 	mutex.RLock()
+// }	else {
+// 	mutex.Lock()
+// }
+
 	f, err := os.OpenFile(filename, mode, perm)
-	lockerr:=syscall.Flock(int(f.Fd()), 0600)
-	if lockerr!=nil{
-		panic(lockerr)
-	}
-	if err!=nil{
+	if err!=nil{m
 		panic(err)
 	}
+
+	//lockerr:=syscall.Flock(int(f.Fd()), syscall.LOCK_EX)
+	//fmt.Println("File is now locked,")
+	//if lockerr!=nil{
+	//	panic(lockerr)
+	//}
 	defer f.Close()
+
 	write(f)
-	m.Unlock()
-	wg.Done()
-	lockerr2:=syscall.Flock(int(f.Fd()), 0644)
-	if lockerr2!=nil{
-		panic(lockerr2)
-	}
+
+	//lockerr2:=syscall.Flock(int(f.Fd()), syscall.LOCK_UN)
+	//fmt.Println("File is now unlocked,")
+	//if lockerr2!=nil{
+	//	panic(lockerr2)
+	//}
 }
 
 func main() {
-	var w sync.WaitGroup
-	var m sync.Mutex
-	w.Add(1)
-	go fopen("data", os.O_APPEND|os.O_WRONLY, 0644, w, m)
-	w.Wait()
+	fopen("data", os.O_APPEND|os.O_WRONLY, 0644)
 }
 
 //f, err := os.OpenFile("data", O_APPEND|O_WRONLY, 0644)

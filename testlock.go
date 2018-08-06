@@ -24,7 +24,7 @@ func write1(fil *os.File){
 
 func main() {
 
-	f, err := os.OpenFile("data", os.O_APPEND|os.O_WRONLY, 0644)
+	f, err := os.OpenFile("data", os.O_APPEND|os.O_WRONLY, os.ModeExclusive)
 	if err != nil {
 		panic(err)
 	}
