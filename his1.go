@@ -6,7 +6,7 @@ import (
     "bufio"
     "sync"
 	"github.com/boltdb/bolt"
-)
+	)
 
 var mutex sync.RWMutex
 
@@ -27,24 +27,22 @@ func fwrite(fil *os.File){
 	}
 
 func fopen(filename string, mode int, perm os.FileMode){
-
-
 	f, err := os.OpenFile(filename, mode, perm)
 	if err!=nil{
 		panic(err)
 	}
-	mutex.Lock()
+	//mutex.Lock()
 	//lockerr:=syscall.Flock(int(f.Fd()), syscall.LOCK_EX)
-	fmt.Println("File is now locked,")
+	//fmt.Println("File is now locked,")
 	//if lockerr!=nil{
 	//	panic(lockerr)
 	//}
 	defer f.Close()
 
 	fwrite(f)
-	mutex.Unlock()
+	//mutex.Unlock()
 	//lockerr2:=syscall.Flock(int(f.Fd()), syscall.LOCK_UN)
-	fmt.Println("File is now unlocked,")
+	//fmt.Println("File is now unlocked,")
 	//if lockerr2!=nil{
 	//	panic(lockerr2)
 	//}
@@ -82,7 +80,7 @@ func dbupdate(){
 }
 
 func main() {
-	//fopen("data", os.O_APPEND|os.O_WRONLY, 0644)
-	dbupdate()
+	fopen("data", os.O_APPEND|os.O_WRONLY, os.ModeExclusive)
+	//dbupdate()
 }
 
