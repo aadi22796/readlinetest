@@ -26,7 +26,7 @@ func fwrite(fil *os.File){
 		fmt.Println("Exited program")
 	} else {
 		//fil.WriteString(inp)
-		circbuf(fil,inp)
+		circbuf(fil,strings.Trim(inp, "\n")+";")
 		fwrite(fil)
 	}
 	return
@@ -54,28 +54,35 @@ func circbuf(fil *os.File, inp string) {
 	//conditions for circular insertion
 	switch con:=lastline/size;con{
 	case 0:{
-		fil.WriteString(inp)
-		lastline++
-		fmt.Println("In case 0, lastline status:",lastline)
-		ioutil.WriteFile("lastline",[]byte(strconv.Itoa(lastline)+"\n"),0600)
-		fwrite(fil)
+		if lastline%size==4{
+			fil.WriteString(strings.Trim(inp, ";"))
+			lastline++
+			fmt.Println("In case 0, lastline status:", lastline)
+			ioutil.WriteFile("lastline", []byte(strconv.Itoa(lastline)+"\n"), 0600)
+		}else {
+			fil.WriteString(inp)
+			lastline++
+			fmt.Println("In case 0, lastline status:", lastline)
+			ioutil.WriteFile("lastline", []byte(strconv.Itoa(lastline)+"\n"), 0600)
+		}
 	}
 	default:{
-		var n=(lastline%size)-1
+		var n=lastline%size
 		d,_:=ioutil.ReadFile("data")
-		fmt.Println(string(d))
-		lines := strings.Split(string(d), "\n")
-		if n==-1{
-			lines[len(lines)-1]=inp
-		}else{
-			lines[n]=inp
-			}
-		output := strings.Join(lines, "\n")
+		lines := strings.Split(string(d), ";")
+		fmt.Println("Array Contents Before Changing:",lines)
+		//if n==0{
+			//lines[size]=inp
+		//}else{
+			//lines[n-1]=inp
+			//}
+		lines[n]=strings.Trim(inp, ";")
+		fmt.Println("Array Contents After Changing:",lines)
+		output := strings.Join(lines, ";")
 		ioutil.WriteFile("data",[]byte(output),0600)
 		lastline++
 		fmt.Println("In case default, lastline status:",lastline)
 		ioutil.WriteFile("lastline",[]byte(strconv.Itoa(lastline)+"\n"),0600)
-		fwrite(fil)
 
 	}
 
