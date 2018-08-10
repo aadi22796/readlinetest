@@ -14,31 +14,26 @@ func arrows() string {
 	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 	// do not display entered characters on the screen
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+	defer exec.Command("stty", "-F", "/dev/tty", "echo").Run()
+	defer exec.Command("stty", "-F", "/dev/tty", "-cbreak", "min", "1").Run()
 
-	//var b = make([]byte, 100)
-	var b string
+
+	var b = make([]byte, 100)
 	for {
-		fmt.Scan(&b)
-
-		if b == "^[[A" {
-			exec.Command("stty", "-F", "/dev/tty", "echo").Run()
-			exec.Command("stty", "-F", "/dev/tty", "-cbreak", "min", "1").Run()
+		os.Stdin.Read(b)
+		if b[0] == 27 {
+			if b[2] == 65 {
 			return "Up"
-		} else if b == "^[[B" {
-			exec.Command("stty", "-F", "/dev/tty", "echo").Run()
-			exec.Command("stty", "-F", "/dev/tty", "-cbreak", "min", "1").Run()
+		} else if b[2] == 66 {
 			return "Down"
-		} else if b == "^[[C" {
-			exec.Command("stty", "-F", "/dev/tty", "echo").Run()
-			exec.Command("stty", "-F", "/dev/tty", "-cbreak", "min", "1").Run()
+		} else  {
 			return "esc"
-		} else {
-			exec.Command("stty", "-F", "/dev/tty", "echo").Run()
-			exec.Command("stty", "-F", "/dev/tty", "-cbreak", "min", "1").Run()
+		} }else {
 			return "Other value caught"
 		}
 
 	}
+
 }
 func lineCounter(r io.Reader) (int) {
 	buf := make([]byte, 32*1024)
@@ -79,7 +74,8 @@ func updown(lines int, maxline int) {
 	a, _ := ReadLine("data", lines)
 	fmt.Print(a)
 	//fmt.Println("Enter + to go down, - to go up")
-	if arrows() == "Down" {
+	arval:=arrows()
+	if arval == "Down" {
 		if lines == maxline {
 			fmt.Print("You're already on the last line: ")
 			updown(lines, maxline)
@@ -87,7 +83,7 @@ func updown(lines int, maxline int) {
 			lines = lines + 1
 			updown(lines, maxline)
 		}
-	} else if arrows() == "Up" {
+	} else if arval == "Up" {
 		if lines == 1 {
 			fmt.Print("You're already on the first line: ")
 			updown(lines, maxline)
@@ -95,7 +91,7 @@ func updown(lines int, maxline int) {
 			lines = lines - 1
 			updown(lines, maxline)
 		}
-	} else if arrows() == "esc" {
+	} else if arval == "esc" {
 		fmt.Println("Exited Program")
 	} else {
 		fmt.Println("Invalid Syntax")
