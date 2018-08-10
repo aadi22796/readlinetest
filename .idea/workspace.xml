@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aeef89a7-12d5-448c-a77b-b91ca69d2c21" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data" beforeDir="false" afterPath="$PROJECT_DIR$/data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/h3.go" beforeDir="false" afterPath="$PROJECT_DIR$/his3.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/his1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/his1.go" beforeDir="false" afterPath="$PROJECT_DIR$/his1.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/his2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/his2.go" beforeDir="false" afterPath="$PROJECT_DIR$/his2.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/info" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lastline" beforeDir="false" afterPath="$PROJECT_DIR$/lastline" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mydb.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testint.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testlock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testlock.go" beforeDir="false" />
-    </list>
+    <list default="true" id="aeef89a7-12d5-448c-a77b-b91ca69d2c21" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,11 +58,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/his2.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="756">
-              <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
+            <state relative-caret-position="648">
+              <caret line="25" column="23" lean-forward="true" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -99,11 +85,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/his3.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="20" column="22" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+            <state relative-caret-position="396">
+              <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -271,9 +257,10 @@
     </recent_temporary>
   </component>
   <component name="ToolWindowManager">
-    <frame x="134" y="35" width="3706" height="2125" extended-state="6" />
+    <frame x="134" y="35" width="1853" height="2125" extended-state="4" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16003317" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32804534" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -304,13 +291,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="32725" selection-start-column="32725" selection-end-column="32725" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/his2.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="28" column="53" selection-start-line="28" selection-start-column="53" selection-end-line="28" selection-end-column="53" />
         </state>
       </provider>
     </entry>
@@ -357,8 +337,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/his3.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="20" column="22" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+        <state relative-caret-position="396">
+          <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/his2.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="25" column="23" lean-forward="true" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
         </state>
       </provider>
     </entry>
