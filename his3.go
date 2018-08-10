@@ -5,7 +5,7 @@ import(
 "os/exec"
 )
 
-func arrows() string{
+func arrows2() string{
 	// disable input buffering
 exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 // do not display entered characters on the screen
@@ -36,5 +36,5 @@ return "esc caught"
 }
 }
 func main(){
-	fmt.Println(arrows())
+	fmt.Println(arrows2())
 }

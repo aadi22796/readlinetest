@@ -1,163 +1,89 @@
 package main
 
 import (
-    "fmt"
-    "os"
-    "bufio"
-	"github.com/boltdb/bolt"
-	"github.com/theckman/go-flock"
+	"os"
+	"bufio"
 	"strconv"
 	"strings"
 	"io/ioutil"
-
+	"syscall"
 )
 
-//var mutex sync.Mutex
-
-func fwrite(fil *os.File){
-
-	fmt.Println("Enter your string")
-	rd:=bufio.NewReader(os.Stdin)
-	inp, err:=rd.ReadString('\n')
-	if err!=nil{
+func fwrite(fil *os.File) {
+	rd := bufio.NewReader(os.Stdin)
+	inp, err := rd.ReadString('\n')
+	if err != nil {
 		panic(err)
 	}
-	if inp == "exit\n"{
-		fmt.Println("Exited program")
+	if inp == "exit\n" {
 	} else {
-		//fil.WriteString(inp)
-		circbuf(fil,strings.Trim(inp, "\n")+";")
+		circbuf(fil, inp)
 		fwrite(fil)
 	}
 	return
-	}
+}
 
 func circbuf(fil *os.File, inp string) {
-
-
 	//creating lastline file if not exists
 	if _, err := os.Stat("lastline"); os.IsNotExist(err) {
 		f, _ := os.OpenFile("lastline", os.O_WRONLY|os.O_CREATE, 0600)
 		f.WriteString("0\n")
 	}
-	const size =5
+	const size = 20
 	//reading lastline file and storing in int
-		f, err := os.OpenFile("lastline", os.O_RDWR, 0600)
-		if err != nil {
-			panic(err)
-		}
-		bf := bufio.NewReader(f)
-		ll, _ := bf.ReadString('\n')
-		lastline, _ := strconv.Atoi(strings.Trim(ll, "\n"))
-
+	f, err := os.OpenFile("lastline", os.O_RDWR, 0600)
+	if err != nil {
+		panic(err)
+	}
+	bf := bufio.NewReader(f)
+	ll, _ := bf.ReadString('\n')
+	lastline, _ := strconv.Atoi(strings.Trim(ll, "\n"))
 
 	//conditions for circular insertion
-	switch con:=lastline/size;con{
-	case 0:{
-		if lastline%size==4{
-			fil.WriteString(strings.Trim(inp, ";"))
+	switch con := lastline / size; con {
+	case 0:
+		{
+			if lastline%size == size-1 {
+				fil.WriteString(strings.Trim(inp, "\n"))
+				lastline++
+				ioutil.WriteFile("lastline", []byte(strconv.Itoa(lastline)+"\n"), 0600)
+			} else {
+				fil.WriteString(inp)
+				lastline++
+				ioutil.WriteFile("lastline", []byte(strconv.Itoa(lastline)+"\n"), 0600)
+			}
+		}
+	default:
+		{
+			var n = lastline % size
+			d, _ := ioutil.ReadFile("data")
+			lines := strings.Split(string(d), "\n")
+			lines[n] = strings.Trim(inp, "\n")
+			output := strings.Join(lines, "\n")
+			ioutil.WriteFile("data", []byte(output), 0600)
 			lastline++
-			fmt.Println("In case 0, lastline status:", lastline)
-			ioutil.WriteFile("lastline", []byte(strconv.Itoa(lastline)+"\n"), 0600)
-		}else {
-			fil.WriteString(inp)
-			lastline++
-			fmt.Println("In case 0, lastline status:", lastline)
 			ioutil.WriteFile("lastline", []byte(strconv.Itoa(lastline)+"\n"), 0600)
 		}
 	}
-	default:{
-		var n=lastline%size
-		d,_:=ioutil.ReadFile("data")
-		lines := strings.Split(string(d), ";")
-		fmt.Println("Array Contents Before Changing:",lines)
-		//if n==0{
-			//lines[size]=inp
-		//}else{
-			//lines[n-1]=inp
-			//}
-		lines[n]=strings.Trim(inp, ";")
-		fmt.Println("Array Contents After Changing:",lines)
-		output := strings.Join(lines, ";")
-		ioutil.WriteFile("data",[]byte(output),0600)
-		lastline++
-		fmt.Println("In case default, lastline status:",lastline)
-		ioutil.WriteFile("lastline",[]byte(strconv.Itoa(lastline)+"\n"),0600)
+}
 
-	}
-
-	}
-
-
-	}
-
-
-
-
-func fopen(filename string, mode int, perm os.FileMode){
-
-	//mutex.Lock()
-	//defer mutex.Unlock()
-	fileLock := flock.NewFlock("/home/aadi22796/readlinetest/his1.go")
-	_,errf:=fileLock.TryLock()
-	if errf!=nil{
-		panic(errf)
-	}
+func fopen(filename string, mode int, perm os.FileMode) {
 	f, err := os.OpenFile(filename, mode, perm)
-	if err!=nil{
+	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
-
-	//lockerr:=syscall.Flock(int(f.Fd()), syscall.LOCK_EX)
-	//fmt.Println("File is now locked,")
-	//if lockerr!=nil{
-	//	panic(lockerr)
-	//}
-
+	lockerr := syscall.Flock(int(f.Fd()), syscall.LOCK_EX)
+	if lockerr != nil {
+		panic(lockerr)
+	}
 	fwrite(f)
-	//mutex.Unlock()
-	//lockerr2:=syscall.Flock(int(f.Fd()), syscall.LOCK_UN)
-	//fmt.Println("File is now unlocked,")
-	//if lockerr2!=nil{
-	//	panic(lockerr2)
-	//}
-	fileLock.Unlock()
+	unlockerr := syscall.Flock(int(f.Fd()), syscall.LOCK_UN)
+	if unlockerr != nil {
+		panic(lockerr)
 	}
-
-//func dbopen(dbname string){
-	//db,_:=bolt.Open(dbname,0644, nil)
-	//defer db.Close()
-	//dbupdate(db)
-
-//}
-
-func dbupdate(){
-	db,_:=bolt.Open("mydb.db",0644, nil)
-	defer db.Close()
-	fmt.Println("Enter your string")
-	rd:=bufio.NewReader(os.Stdin)
-	inp, err:=rd.ReadString('\n')
-	if err!=nil{
-		panic(err)
-	}
-	if inp == "exit\n"{
-		fmt.Println("Exited program")
-	} else {
-		tx,_:=db.Begin(true)
-		defer tx.Rollback()
-		b,_:=tx.CreateBucketIfNotExists([]byte("MyBucket5"))
-		err:=b.Put([]byte("answer1"), []byte("^[[A"))
-		if err!=nil{panic(err)}
-		fmt.Println(b.Get([]byte("answer1")))
-		//tx.DeleteBucket([]byte("MyBucket5"))
-		tx.Commit()
-	}
-	return
 }
 
 func main() {
-	fopen("data", os.O_APPEND|os.O_WRONLY, os.ModeExclusive)
-	//dbupdate()
+	fopen("data", os.O_APPEND|os.O_WRONLY, 0644)
 }
-
