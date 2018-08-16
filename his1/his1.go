@@ -1,4 +1,4 @@
-package main
+package his1
 
 import (
 	"os"
@@ -67,7 +67,7 @@ func circbuf(fil *os.File, inp string) {
 	}
 }
 
-func fopen(filename string, mode int, perm os.FileMode) {
+func fopen(filename string, mode int, perm os.FileMode, str string) {
 	f, err := os.OpenFile(filename, mode, perm)
 	if err != nil {
 		panic(err)
@@ -84,6 +84,6 @@ func fopen(filename string, mode int, perm os.FileMode) {
 	}
 }
 
-func main() {
+/*func main() {
 	fopen("data", os.O_APPEND|os.O_WRONLY, 0644)
-}
+}/*
