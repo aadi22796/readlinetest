@@ -35,6 +35,7 @@ func arrows() string {
 	}
 
 }
+
 func lineCounter(r io.Reader) (int) {
 	buf := make([]byte, 32*1024)
 	count := 0
@@ -50,6 +51,7 @@ func lineCounter(r io.Reader) (int) {
 		}
 	}
 }
+
 
 func ReadLine(inp string, n int) (string, error) {
 	f, err := os.Open(inp)
